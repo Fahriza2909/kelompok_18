@@ -38,22 +38,28 @@ const navbarHTML = `
                 </li>
             </ul>
             
-            <!-- Search Box -->
+            <!-- Search Box + Dark Mode + Cart -->
             <div class="d-flex align-items-center">
-                <div class="search-box me-3 d-none d-md-block">
-                    <i class="bi bi-search search-icon"></i>
-                    <input type="text" class="form-control search-input" placeholder="Cari produk...">
-                </div>
-                
-                <!-- Cart Button -->
-                <div class="position-relative me-2">
-                    <a href="cart.html" class="btn btn-outline-danger position-relative">
-                            <i class="bi bi-cart3"></i>
-                            <span class="cart-count position-absolute">
-                                0
-                            </span>
-                    </a>
-                </div>
+
+            <!-- Search -->
+            <div class="search-box me-3 d-none d-md-block">
+              <i class="bi bi-search search-icon"></i>
+              <input type="text" class="form-control search-input" placeholder="Cari produk...">
+            </div>
+
+            <!-- Dark Mode Toggle -->
+            <button class="btn btn-outline-secondary me-2" id="themeToggle">
+              <i class="bi bi-moon-fill"></i>
+            </button>
+
+              <!-- Cart Button -->
+              <div class="position-relative">
+                  <a href="cart.html" class="btn btn-outline-danger position-relative">
+                  <i class="bi bi-cart3"></i>
+                <span class="cart-count position-absolute">0</span>
+                </a>
+              </div>
+
             </div>
         </div>
     </div>
@@ -123,3 +129,28 @@ function updateCartCount() {
 
 // Initialize cart count when navbar is loaded
 document.addEventListener("DOMContentLoaded", updateCartCount);
+
+// Dark Mode Toggle
+function initThemeToggle() {
+  const toggleBtn = document.getElementById("themeToggle");
+  const savedTheme = localStorage.getItem("theme");
+
+  if (savedTheme === "dark") {
+    document.body.classList.add("dark-mode");
+    toggleBtn.innerHTML = '<i class="bi bi-sun-fill"></i>';
+  }
+
+  toggleBtn.addEventListener("click", () => {
+    document.body.classList.toggle("dark-mode");
+
+    const isDark = document.body.classList.contains("dark-mode");
+    localStorage.setItem("theme", isDark ? "dark" : "light");
+
+    toggleBtn.innerHTML = isDark
+      ? '<i class="bi bi-sun-fill"></i>'
+      : '<i class="bi bi-moon-fill"></i>';
+  });
+}
+
+// Jalankan setelah navbar dimuat
+document.addEventListener("DOMContentLoaded", initThemeToggle);
